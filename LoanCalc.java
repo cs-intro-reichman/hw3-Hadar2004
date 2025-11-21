@@ -43,13 +43,16 @@ public class LoanCalc {
 	// Given: the sum of the loan, the periodical interest rate (as a percentage),
 	// the number of periods (n), and epsilon, the approximation's accuracy
 	// Side effect: modifies the class variable iterationCounter.
-   public static double bruteForceSolver(double loan, double rate, int n, double epsilon) {
+  public static double bruteForceSolver(double loan, double rate, int n, double epsilon) {
+    iterationCounter = 0; 
     double g = loan / n;
+    
     while (endBalance(loan, rate, n, g) > 0) {
-        g = g + epsilon; 
+        g = g + epsilon;
+        iterationCounter++; 
     }
     
-    return g; 
+    return g;
 }
     
     // Uses bisection search to compute an approximation of the periodical payment 
@@ -57,20 +60,21 @@ public class LoanCalc {
 	// Given: the sum of the loan, the periodical interest rate (as a percentage),
 	// the number of periods (n), and epsilon, the approximation's accuracy
 	// Side effect: modifies the class variable iterationCounter.
-    public static double bisectionSolver(double loan, double rate, int n, double epsilon) {
-    double L = loan / n;  
-    double H = loan;     
-    double g = (L + H) / 2.0; 
+public static double bisectionSolver(double loan, double rate, int n, double epsilon) {
+    iterationCounter = 0; // <--- תיקון 1: לאפס את המונה בהתחלה
+    double L = loan / n;
+    double H = loan;
+    double g = (L + H) / 2.0;
 
     while ((H - L) > epsilon) {
         if (endBalance(loan, rate, n, g) > 0) {
-            L = g; 
+            L = g;
         } else {
             H = g;
         }
         
-        g = (L + H) / 2.0; 
-        
+        g = (L + H) / 2.0;
+        iterationCounter++; 
     }
 
     return g;
